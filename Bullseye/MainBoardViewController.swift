@@ -41,42 +41,44 @@ class MainBoardViewController: UIViewController {
 
     @IBAction func didTapSelectButton(_ sender: Any) {
         
+        
         // 1. Забрать число у слайдера.
         let sliderValue: Float = slider.value
-        
+
         // 2. Перевести это число в Int (sliderValueInt), чтобы можно было сравнить два целых числа.
         let sliderValueInt: Int = Int(slider.value)
-        
+
         // 3. Сравнить два числа, и если они совпадают, то вывести в консоль информацию об этом.
         let isValuesEquals = sliderValueInt == guessingNumber
-        
+
         if isValuesEquals {
-            
+
             // - добавлять 1 очко.
             score += 1
-            
+
             // - обновить значение лейбла с очками.
             scoreLabel.text = "Очки:" + " " + String(score)
-            
+
             print("Вы угадали число!")
-            
+
         }else{
-            
+
             print("Вы выбрали число \(sliderValueInt)")
         }
-        
+
         // - Повышать раунд.
         round += 1
-        
+
         // - обновить значение лейбла с раундом.
         gameround.text = "Раунд " + String(round)
-        
+
         updateGuessingNumber()
-        
-        // - Начинать заново игру после 10 раунда.
+
+        // -  После окончания 10 раунда, выводить на экран Alert с результатами.
         if round == 11{
             
-            setUp()
+            gameround.text = "Раунд 10" 
+            showResults()
         }
     }
     
@@ -112,5 +114,25 @@ class MainBoardViewController: UIViewController {
         
         taskLabel.text = "Попробуйте угадать число:" + " " + String(guessingNumber)
     }
+    // - Функция для объявления результатов.
+    func showResults(){
+        
+        // Создаем Alert.
+        let alert = UIAlertController(title: "Итоги игры", message: "Вы заработали \(score) очков", preferredStyle: .alert)
+        
+        // Создали кнопку для Alert.
+        let okButton: UIAlertAction = UIAlertAction(title: "Начать сначала", style: .default, handler: { _ in
+            print("на меня нажали")
+            
+            self.setUp()
+        })
+        
+        // Добавили кнопку в Alert.
+        alert.addAction(okButton)
+        
+        // Отобразили  Alert на экране.
+        present(alert, animated: true)
+    }
 }
+
 
